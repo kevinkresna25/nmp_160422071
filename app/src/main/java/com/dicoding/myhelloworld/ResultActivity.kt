@@ -1,6 +1,8 @@
 package com.dicoding.myhelloworld
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +12,10 @@ import com.dicoding.myhelloworld.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
+    private var HIGH_SCORE = 0
 
     companion object {
         val PLAYER_NAME = "player_name"
-        private var HIGH_SCORE = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +25,17 @@ class ResultActivity : AppCompatActivity() {
 
         val currentScore = intent.getIntExtra(MainActivity.PLAYER_SCORE, 0)
 
-        if (currentScore > HIGH_SCORE) HIGH_SCORE = currentScore
+//      high score SharedPreferences
+        val sharedPreferences: SharedPreferences = getSharedPreferences("SETTING", Context.MODE_PRIVATE)
+        HIGH_SCORE = sharedPreferences.getString("HIGH_SCORE", "0").toString().toInt()
+
+        if (currentScore > HIGH_SCORE) {
+            HIGH_SCORE = currentScore
+            val editor = sharedPreferences.edit()
+            editor.putString("HIGH_SCORE", HIGH_SCORE.toString())
+            editor.apply()
+        }
+
         binding.txtScore.text = currentScore.toString()
         binding.txtHighScore.text = HIGH_SCORE.toString()
 

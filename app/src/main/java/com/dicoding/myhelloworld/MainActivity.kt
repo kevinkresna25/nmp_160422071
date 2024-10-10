@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.dicoding.myhelloworld.IntroActivity.Companion.PLAYER_NAME
 import com.dicoding.myhelloworld.databinding.ActivityMainBinding
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         private var PLAYER_NAME: String = "guest"
     }
 
+    var currentScore = 0
     var currentQuestion: Int = 0
+    private lateinit var availableQuestion:Array<QuestionBank>
+
 
 //    val questions = arrayOf(
 //        QuestionBank("Krusty Krab is the favorite burger in Bikini Bottom", false),
@@ -33,12 +37,11 @@ class MainActivity : AppCompatActivity() {
 //        QuestionBank("Squidward has four hands", false),
 //    )
 
-    var questions = QuestionData.questions
+//    var questions = availableQuestion
 
     var wrong: Int = 0;
     var right: Int = 0;
     var attempts: Int = 1;
-    var currentScore = 0
 
     fun displayQuestions() {
 //        if (currentQuestion > questions.size - 1 && right < 5) {
@@ -53,11 +56,22 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         // Week 3
-        if (currentQuestion > questions.size - 1) {
+        if (currentQuestion > availableQuestion.size - 1) {
             currentQuestion = 0
-            questions.shuffle()
+            availableQuestion.shuffle()
         }
-        binding.txtQuestion.text = questions[currentQuestion].question
+
+//      availableQuestion
+        if(availableQuestion[currentQuestion].url != "") {
+            val builder = Picasso.Builder(this)
+            val url = availableQuestion[currentQuestion].url
+            builder.listener { picasso, uri, exception -> exception.printStackTrace() }
+            builder.build().load(url).into(binding.imageView)
+        } else {
+            binding.imageView.setImageResource(availableQuestion[currentQuestion].imageId)
+        }
+
+        binding.txtQuestion.text = availableQuestion[currentQuestion].question
     }
 
     fun nextQuestion() {
@@ -83,25 +97,35 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         // Week 3 - if wrong, redirect to result activity
-        if (wrong >= 1) {
+        if (wrong >= 3) {
             val intent = Intent(this, ResultActivity::class.java)
             // Add Extra data inside intent object
             intent.putExtra(PLAYER_SCORE, currentScore)
             startActivity(intent)  // start Main Activity
         }
         currentQuestion++
+
+//      availableQuestion
+        if(currentQuestion >= availableQuestion.size) {
+            currentQuestion = 0
+            availableQuestion = QuestionData.questions.filter {
+                it.isAvailable }
+                .toTypedArray()
+            availableQuestion.shuffle()
+        }
+
         displayQuestions()
     }
 
     fun answerCurrentQuestion(answer: Boolean) {
-        if (currentQuestion > questions.size - 1) {
+        if (currentQuestion > availableQuestion.size - 1) {
 //            Toast.makeText(this, "End of Quiz", Toast.LENGTH_SHORT).show()
 //            return
             // Week 3 - reset index to 0
             currentQuestion = 0
         }
 
-        if (questions[currentQuestion].answer) {
+        if (availableQuestion[currentQuestion].answer) {
             if (answer) {
                 Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show()
                 right++
@@ -146,7 +170,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnReAttempt.visibility = Button.INVISIBLE;
 
-        questions.shuffle()
+//        availableQuestion.shuffle()
+
+//      availableQuestion
+        availableQuestion = QuestionData.questions.filter {
+            it.isAvailable }
+            .toTypedArray()
+        availableQuestion.shuffle()
+
+//      display Questions
         displayQuestions()
 
         binding.btnTrue.setOnClickListener {

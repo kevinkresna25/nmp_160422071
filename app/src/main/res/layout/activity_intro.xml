@@ -42,13 +42,71 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/unlock"
         android:text="Start"
         android:textColor="@android:color/holo_orange_dark"
         android:textColorLink="#FF5722"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtBod" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/unlock"
+        android:text="Edit Question"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textColorLink="#FF5722"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStart" />
+
+    <EditText
+        android:id="@+id/txtBod"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Birth of Date"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPlayerName" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEdit">
+
+    </WebView>
+
+    <ProgressBar
+        android:id="@+id/progressWebView"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/webView"
+        app:layout_constraintEnd_toEndOf="@+id/webView"
+        app:layout_constraintStart_toStartOf="@+id/webView"
+        app:layout_constraintTop_toTopOf="@+id/webView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
