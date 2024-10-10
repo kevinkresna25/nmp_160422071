@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Spongebob</string>
+    <string name="bg_desc">Bikini Bottom</string>
+    <string name="lb_true">TRUE</string>
+    <string name="lb_false">FALSE</string>
+    <string name="helloworld">Hello World</string>
+    <string name="lb_reattempt">Re Attempt</string>
+    <string name="lb_score">Score: 0</string>
+</resources>
